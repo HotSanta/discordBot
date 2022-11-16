@@ -307,7 +307,7 @@ async def NP(ctx, Name):
                  ", and from " + Country + ".```")
 
 
-# sends time error
+
 # regular definition using api key
 @bot.command(
   brief=
@@ -360,6 +360,169 @@ async def UrbanDef(ctx, message):
 
 
 #============================================================
+
+
+player, opponent = ':x:', ':green_circle:'
+
+
+# This function returns true if there are moves
+# remaining on the board. It returns false if
+# there are no moves left to play.
+def isMovesLeft(board):
+
+  for i in range(3):
+    for j in range(3):
+      if (board[i][j] == ':white_large_square:'):
+        return True
+  return False
+
+
+# This is the evaluation function as discussed
+# in the previous article ( http://goo.gl/sJgv68 )
+def evaluate(b):
+
+  # Checking for Rows for X or O victory.
+  for row in range(3):
+    if (b[row][0] == b[row][1] and b[row][1] == b[row][2]):
+      if (b[row][0] == player):
+        return 10
+      elif (b[row][0] == opponent):
+        return -10
+
+  # Checking for Columns for X or O victory.
+  for col in range(3):
+
+    if (b[0][col] == b[1][col] and b[1][col] == b[2][col]):
+
+      if (b[0][col] == player):
+        return 10
+      elif (b[0][col] == opponent):
+        return -10
+
+  # Checking for Diagonals for X or O victory.
+  if (b[0][0] == b[1][1] and b[1][1] == b[2][2]):
+
+    if (b[0][0] == player):
+      return 10
+    elif (b[0][0] == opponent):
+      return -10
+
+  if (b[0][2] == b[1][1] and b[1][1] == b[2][0]):
+
+    if (b[0][2] == player):
+      return 10
+    elif (b[0][2] == opponent):
+      return -10
+
+  # Else if none of them have won then return 0
+  return 0
+
+
+# This is the minimax function. It considers all
+# the possible ways the game can go and returns
+# the value of the board
+def minimax(board, depth, isMax):
+  score = evaluate(board)
+
+  # If Maximizer has won the game return his/her
+  # evaluated score
+  if (score == 10):
+    return score
+
+  # If Minimizer has won the game return his/her
+  # evaluated score
+  if (score == -10):
+    return score
+
+  # If there are no more moves and no winner then
+  # it is a tie
+  if (isMovesLeft(board) == False):
+    return 0
+
+  # If this maximizer's move
+  if (isMax):
+    best = -1000
+
+    # Traverse all cells
+    for i in range(3):
+      for j in range(3):
+
+        # Check if cell is empty
+        if (board[i][j] == ':white_large_square:'):
+
+          # Make the move
+          board[i][j] = player
+
+          # Call minimax recursively and choose
+          # the maximum value
+          best = max(best, minimax(board, depth + 1, not isMax))
+
+          # Undo the move
+          board[i][j] = ':white_large_square:'
+    return best
+
+  # If this minimizer's move
+  else:
+    best = 1000
+
+    # Traverse all cells
+    for i in range(3):
+      for j in range(3):
+
+        # Check if cell is empty
+        if (board[i][j] == ':white_large_square:'):
+
+          # Make the move
+          board[i][j] = opponent
+
+          # Call minimax recursively and choose
+          # the minimum value
+          best = min(best, minimax(board, depth + 1, not isMax))
+
+          # Undo the move
+          board[i][j] = ':white_large_square:'
+    return best
+
+
+# This will return the best possible move for the player
+def findBestMove(board):
+  bestVal = -1000
+  bestMove = (-1, -1)
+
+  # Traverse all cells, evaluate minimax function for
+  # all empty cells. And return the cell with optimal
+  # value.
+  for i in range(3):
+    for j in range(3):
+
+      # Check if cell is empty
+      if (board[i][j] == ':white_large_square:'):
+
+        # Make the move
+        board[i][j] = player
+
+        # compute evaluation function for this
+        # move.
+        moveVal = minimax(board, 0, False)
+
+        # Undo the move
+        board[i][j] = ':white_large_square:'
+
+        # If the value of the current move is
+        # more than the best value, then update
+        # best/
+        if (moveVal > bestVal):
+          bestMove = (i, j)
+          bestVal = moveVal
+
+  return bestMove
+
+
+
+
+
+
+
 
 
 def botcheck(name, v1, p1, v2, p2, v3, p3):
@@ -488,15 +651,20 @@ def Checks(name):
 
 
 def BotPlay(NAME):
+  chance = r.randint(1,3)
   open_file = open(NAME, "r")
   ValidMoves = open_file.readline().strip("\n").split("|")
-  play = r.choice(ValidMoves)
   board = []
   for _ in range(3):
     value = open_file.readline()
     board.append(value.strip("\n").split(","))
   open_file.close()
-
+  # Has a 1/3 to play a random move, and a 2/3 chance to play the best move
+  if chance in [2,3]:
+    bestMove = findBestMove(board)
+    play = str(bestMove[0] + 1) + "," + str(bestMove[1] + 1)
+  elif chance == 1:
+    play = r.choice(ValidMoves)
   board[int(play[0]) - 1][int(play[2]) - 1] = ":x:"
   ValidMoves.remove(play)
   L1 = "".join(board[0])
@@ -596,31 +764,32 @@ async def TicTacToe(ctx):
 
 #============================================================
 
-def place(name,Line,row):
-  open_file = open(name,"r")
+
+def place(name, Line, row):
+  open_file = open(name, "r")
   board = []
   for x in range(6):
     value = open_file.readline()
     board.append(value.strip("\n").split(","))
   open_file.close()
   Place = True
-  while Place and Line !=6:
-    if board[Line][row-1] == ":white_large_square:":
-      Line +=1
+  while Place and Line != 6:
+    if board[Line][row - 1] == ":white_large_square:":
+      Line += 1
     else:
       Place = False
-  if not board[0][row-1] == ":green_circle:":
-    Line -=1
-    board[Line][row-1] = ":green_circle:"
-    Line1= ",".join(board[0])
-    Line2= ",".join(board[1])
-    Line3= ",".join(board[2])
-    Line4= ",".join(board[3])
-    Line5= ",".join(board[4])
-    Line6= ",".join(board[5])
-    Lines = [Line1,Line2,Line3,Line4,Line5,Line6]
+  if not board[0][row - 1] == ":green_circle:":
+    Line -= 1
+    board[Line][row - 1] = ":green_circle:"
+    Line1 = ",".join(board[0])
+    Line2 = ",".join(board[1])
+    Line3 = ",".join(board[2])
+    Line4 = ",".join(board[3])
+    Line5 = ",".join(board[4])
+    Line6 = ",".join(board[5])
+    Lines = [Line1, Line2, Line3, Line4, Line5, Line6]
     phrase = "\n".join(Lines)
-    open_file = open(name,"w")
+    open_file = open(name, "w")
     open_file.write(phrase)
     open_file.close()
     return "Valid Move"
@@ -634,9 +803,9 @@ def place(name,Line,row):
   " Displays the board and buttons, which will place your piece in the desired lane",
   Arguements="None")
 async def Connect4(ctx):
-  open_file = open(ctx.author.name + "#", "w")  
+  open_file = open(ctx.author.name + "#", "w")
   open_file.write(
-  ":white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
+    ":white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
   )
   open_file.close()
   open_file = open(ctx.author.name + "#", "r")
@@ -651,7 +820,7 @@ async def Connect4(ctx):
   L4 = "".join(board[3])
   L5 = "".join(board[4])
   L6 = "".join(board[5])
-  
+
   button1 = Button(label="",
                    emoji="1️⃣",
                    style=discord.ButtonStyle.gray,
@@ -682,7 +851,7 @@ async def Connect4(ctx):
                    row=1)
 
   async def button1Clicked(interaction):
-    x = place(ctx.author.name + "#",0,1)
+    x = place(ctx.author.name + "#", 0, 1)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
     else:
@@ -700,11 +869,9 @@ async def Connect4(ctx):
       L6 = "".join(board[5])
       message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await ctx.send(message, view=view1)
-      
-    
 
   async def button2Clicked(interaction):
-    x = place(ctx.author.name + "#",0,2)
+    x = place(ctx.author.name + "#", 0, 2)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
     else:
@@ -724,7 +891,7 @@ async def Connect4(ctx):
       await ctx.send(message, view=view1)
 
   async def button3Clicked(interaction):
-    x = place(ctx.author.name + "#",0,3)
+    x = place(ctx.author.name + "#", 0, 3)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
     else:
@@ -744,7 +911,7 @@ async def Connect4(ctx):
       await ctx.send(message, view=view1)
 
   async def button4Clicked(interaction):
-    x = place(ctx.author.name + "#",0,4)
+    x = place(ctx.author.name + "#", 0, 4)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
     else:
@@ -764,7 +931,7 @@ async def Connect4(ctx):
       await ctx.send(message, view=view1)
 
   async def button5Clicked(interaction):
-    x = place(ctx.author.name + "#",0,5)
+    x = place(ctx.author.name + "#", 0, 5)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
     else:
@@ -784,8 +951,8 @@ async def Connect4(ctx):
       await ctx.send(message, view=view1)
 
   async def button6Clicked(interaction):
-  
-    x = place(ctx.author.name + "#",0,6)
+
+    x = place(ctx.author.name + "#", 0, 6)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
     else:
@@ -805,7 +972,7 @@ async def Connect4(ctx):
       await ctx.send(message, view=view1)
 
   async def button7Clicked(interaction):
-    x = place(ctx.author.name + "#",0,7)
+    x = place(ctx.author.name + "#", 0, 7)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
     else:
@@ -824,7 +991,6 @@ async def Connect4(ctx):
       message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await ctx.send(message, view=view1)
 
-  
   button1.callback = button1Clicked
   button2.callback = button2Clicked
   button3.callback = button3Clicked
@@ -840,8 +1006,11 @@ async def Connect4(ctx):
   view1.add_item(button5)
   view1.add_item(button6)
   view1.add_item(button7)
-  
-  await ctx.send(L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6, view=view1)
+
+  await ctx.send(L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" +
+                 L6,
+                 view=view1)
+
 
 #============================================================
 
