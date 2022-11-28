@@ -757,6 +757,7 @@ async def TicTacToe(ctx):
 #============================================================
 # need to check if its their turn in the buttons
 # in the place, need to pass in opp name and change their file as well
+# board placing works, but it doesn't return the board correctly
 def place(name, Line, row):
   open_file = open(name, "r")
   board = []
@@ -785,7 +786,7 @@ def place(name, Line, row):
     Lines = [Line1, Line2, Line3, Line4, Line5, Line6]
     phrase = "\n".join(Lines)
     open_file = open(name, "w")
-    open_file.write(phrase)
+    open_file.write(opp + piece + "Not\n" + phrase)
     open_file.close()
     return "Valid Move"
   else:
@@ -806,16 +807,18 @@ async def Connect4(ctx, message):
   if message in listMembers:
     open_file = open(ctx.author.name + "#", "w")
     open_file.write(
-      message+"\n:green_circle:\nTurn\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
+      message +
+      "\n:green_circle:\nTurn\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
     )
     open_file.close()
 
     open_file = open(message + "#", "w")
     open_file.write(
-      str(ctx.author.name)+"\n:red_circle:\nNot\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
+      str(ctx.author.name) +
+      "\n:red_circle:\nNot\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
     )
     open_file.close()
-    
+
     open_file = open(ctx.author.name + "#", "r")
     board = []
     opp = open_file.readline()
@@ -831,7 +834,7 @@ async def Connect4(ctx, message):
     L4 = "".join(board[3])
     L5 = "".join(board[4])
     L6 = "".join(board[5])
-  
+
     button1 = Button(label="",
                      emoji="1️⃣",
                      style=discord.ButtonStyle.gray,
@@ -860,15 +863,17 @@ async def Connect4(ctx, message):
                      emoji="7️⃣",
                      style=discord.ButtonStyle.gray,
                      row=1)
-  
+
     async def button1Clicked(interaction):
-      if os.path.exists(str(ctx.author.name)+ "#"):
-        open_file = open(str(ctx.author.name)+ "#","r")
+      if os.path.exists(str(ctx.author.name) + "#"):
+        open_file = open(str(ctx.author.name) + "#", "r")
         opp = open_file.readline()
         piece = open_file.readline()
         turn = open_file.readline()
         open_file.close()
+        print("hi")
         if turn == "Turn":
+          print("hi")
           x = place(ctx.author.name + "#", 0, 1)
           if x == "Invalid Move":
             await ctx.send("Invalid Move")
@@ -892,9 +897,9 @@ async def Connect4(ctx, message):
             await ctx.send(message, view=view1)
       else:
         await ctx.send(str(ctx.author.name) + ", this is not your game")
-  
+
     async def button2Clicked(interaction):
-      if os.path.exists(str(ctx.author.name)+ "#"):
+      if os.path.exists(str(ctx.author.name) + "#"):
         x = place(ctx.author.name + "#", 0, 2)
         if x == "Invalid Move":
           await ctx.send("Invalid Move")
@@ -918,9 +923,9 @@ async def Connect4(ctx, message):
           await ctx.send(message, view=view1)
       else:
         await ctx.send(str(ctx.author.name) + ", this is not your game")
-  
+
     async def button3Clicked(interaction):
-      if os.path.exists(str(ctx.author.name)+ "#"):
+      if os.path.exists(str(ctx.author.name) + "#"):
         x = place(ctx.author.name + "#", 0, 3)
         if x == "Invalid Move":
           await ctx.send("Invalid Move")
@@ -944,9 +949,9 @@ async def Connect4(ctx, message):
           await ctx.send(message, view=view1)
       else:
         await ctx.send(str(ctx.author.name) + ", this is not your game")
-  
+
     async def button4Clicked(interaction):
-      if os.path.exists(str(ctx.author.name)+ "#"):
+      if os.path.exists(str(ctx.author.name) + "#"):
         x = place(ctx.author.name + "#", 0, 4)
         if x == "Invalid Move":
           await ctx.send("Invalid Move")
@@ -970,9 +975,9 @@ async def Connect4(ctx, message):
           await ctx.send(message, view=view1)
       else:
         await ctx.send(str(ctx.author.name) + ", this is not your game")
-  
+
     async def button5Clicked(interaction):
-      if os.path.exists(str(ctx.author.name)+ "#"):
+      if os.path.exists(str(ctx.author.name) + "#"):
         x = place(ctx.author.name + "#", 0, 5)
         if x == "Invalid Move":
           await ctx.send("Invalid Move")
@@ -996,9 +1001,9 @@ async def Connect4(ctx, message):
           await ctx.send(message, view=view1)
       else:
         await ctx.send(str(ctx.author.name) + ", this is not your game")
-  
+
     async def button6Clicked(interaction):
-      if os.path.exists(str(ctx.author.name)+ "#"):
+      if os.path.exists(str(ctx.author.name) + "#"):
         x = place(ctx.author.name + "#", 0, 6)
         if x == "Invalid Move":
           await ctx.send("Invalid Move")
@@ -1022,9 +1027,9 @@ async def Connect4(ctx, message):
           await ctx.send(message, view=view1)
       else:
         await ctx.send(str(ctx.author.name) + ", this is not your game")
-  
+
     async def button7Clicked(interaction):
-      if os.path.exists(str(ctx.author.name)+ "#"):
+      if os.path.exists(str(ctx.author.name) + "#"):
         x = place(ctx.author.name + "#", 0, 7)
         if x == "Invalid Move":
           await ctx.send("Invalid Move")
@@ -1048,7 +1053,7 @@ async def Connect4(ctx, message):
           await ctx.send(message, view=view1)
       else:
         await ctx.send(str(ctx.author.name) + ", this is not your game")
-  
+
     button1.callback = button1Clicked
     button2.callback = button2Clicked
     button3.callback = button3Clicked
@@ -1064,12 +1069,14 @@ async def Connect4(ctx, message):
     view1.add_item(button5)
     view1.add_item(button6)
     view1.add_item(button7)
-  
+
     await ctx.send(L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" +
                    L6,
                    view=view1)
   else:
-    await ctx.send("Person Is not a Viable Opponent\nEither they are a bot or not in the server")
+    await ctx.send(
+      "Person Is not a Viable Opponent\nEither they are a bot or not in the server"
+    )
 
 
 #============================================================
