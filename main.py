@@ -256,6 +256,9 @@ async def Weather(ctx, zip):
                  " degrees fahrenheit right now")
 
 
+#============================================================
+
+
 # api with parameter
 @bot.command(
   brief=" Uses your name to guess your age, gender, and nationality",
@@ -305,7 +308,6 @@ async def NP(ctx, Name):
   await ctx.send("```Your name is " + Name + ", so your age is probably " +
                  str(Age) + ", you are most likely a " + str(Gender) +
                  ", and from " + Country + ".```")
-
 
 
 # regular definition using api key
@@ -361,7 +363,6 @@ async def UrbanDef(ctx, message):
 
 #============================================================
 
-
 player, opponent = ':x:', ':green_circle:'
 
 
@@ -377,8 +378,6 @@ def isMovesLeft(board):
   return False
 
 
-# This is the evaluation function as discussed
-# in the previous article ( http://goo.gl/sJgv68 )
 def evaluate(b):
 
   # Checking for Rows for X or O victory.
@@ -510,19 +509,12 @@ def findBestMove(board):
 
         # If the value of the current move is
         # more than the best value, then update
-        # best/
+        # best
         if (moveVal > bestVal):
           bestMove = (i, j)
           bestVal = moveVal
 
   return bestMove
-
-
-
-
-
-
-
 
 
 def botcheck(name, v1, p1, v2, p2, v3, p3):
@@ -651,7 +643,7 @@ def Checks(name):
 
 
 def BotPlay(NAME):
-  chance = r.randint(1,3)
+  chance = r.randint(1, 3)
   open_file = open(NAME, "r")
   ValidMoves = open_file.readline().strip("\n").split("|")
   board = []
@@ -660,7 +652,7 @@ def BotPlay(NAME):
     board.append(value.strip("\n").split(","))
   open_file.close()
   # Has a 1/3 to play a random move, and a 2/3 chance to play the best move
-  if chance in [2,3]:
+  if chance in [2, 3]:
     bestMove = findBestMove(board)
     play = str(bestMove[0] + 1) + "," + str(bestMove[1] + 1)
   elif chance == 1:
@@ -763,8 +755,9 @@ async def TicTacToe(ctx):
 
 
 #============================================================
-
-
+# add alternating for two people
+# use os.path.exists() to make sure person playing person playing
+# minmax solution for bot plays
 def place(name, Line, row):
   open_file = open(name, "r")
   board = []
@@ -851,145 +844,165 @@ async def Connect4(ctx):
                    row=1)
 
   async def button1Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 1)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
+    if os.path.exists(str(ctx.author.name)+ "#"):
+      x = place(ctx.author.name + "#", 0, 1)
+      if x == "Invalid Move":
+        await ctx.send("Invalid Move")
+      else:
+        open_file = open(ctx.author.name + "#", "r")
+        board = []
+        for _ in range(6):
+          value = open_file.readline()
+          board.append(value.strip("\n").split(","))
+        open_file.close()
+        L1 = "".join(board[0])
+        L2 = "".join(board[1])
+        L3 = "".join(board[2])
+        L4 = "".join(board[3])
+        L5 = "".join(board[4])
+        L6 = "".join(board[5])
+        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+        await ctx.send(message, view=view1)
     else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await ctx.send(message, view=view1)
+      await ctx.send(str(ctx.author.name) + ", this is not your game")
 
   async def button2Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 2)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
+    if os.path.exists(str(ctx.author.name)+ "#"):
+      x = place(ctx.author.name + "#", 0, 2)
+      if x == "Invalid Move":
+        await ctx.send("Invalid Move")
+      else:
+        open_file = open(ctx.author.name + "#", "r")
+        board = []
+        for _ in range(6):
+          value = open_file.readline()
+          board.append(value.strip("\n").split(","))
+        open_file.close()
+        L1 = "".join(board[0])
+        L2 = "".join(board[1])
+        L3 = "".join(board[2])
+        L4 = "".join(board[3])
+        L5 = "".join(board[4])
+        L6 = "".join(board[5])
+        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+        await ctx.send(message, view=view1)
     else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await ctx.send(message, view=view1)
+      await ctx.send(str(ctx.author.name) + ", this is not your game")
 
   async def button3Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 3)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
+    if os.path.exists(str(ctx.author.name)+ "#"):
+      x = place(ctx.author.name + "#", 0, 3)
+      if x == "Invalid Move":
+        await ctx.send("Invalid Move")
+      else:
+        open_file = open(ctx.author.name + "#", "r")
+        board = []
+        for _ in range(6):
+          value = open_file.readline()
+          board.append(value.strip("\n").split(","))
+        open_file.close()
+        L1 = "".join(board[0])
+        L2 = "".join(board[1])
+        L3 = "".join(board[2])
+        L4 = "".join(board[3])
+        L5 = "".join(board[4])
+        L6 = "".join(board[5])
+        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+        await ctx.send(message, view=view1)
     else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await ctx.send(message, view=view1)
+      await ctx.send(str(ctx.author.name) + ", this is not your game")
 
   async def button4Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 4)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
+    if os.path.exists(str(ctx.author.name)+ "#"):
+      x = place(ctx.author.name + "#", 0, 4)
+      if x == "Invalid Move":
+        await ctx.send("Invalid Move")
+      else:
+        open_file = open(ctx.author.name + "#", "r")
+        board = []
+        for _ in range(6):
+          value = open_file.readline()
+          board.append(value.strip("\n").split(","))
+        open_file.close()
+        L1 = "".join(board[0])
+        L2 = "".join(board[1])
+        L3 = "".join(board[2])
+        L4 = "".join(board[3])
+        L5 = "".join(board[4])
+        L6 = "".join(board[5])
+        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+        await ctx.send(message, view=view1)
     else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await ctx.send(message, view=view1)
+      await ctx.send(str(ctx.author.name) + ", this is not your game")
 
   async def button5Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 5)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
+    if os.path.exists(str(ctx.author.name)+ "#"):
+      x = place(ctx.author.name + "#", 0, 5)
+      if x == "Invalid Move":
+        await ctx.send("Invalid Move")
+      else:
+        open_file = open(ctx.author.name + "#", "r")
+        board = []
+        for _ in range(6):
+          value = open_file.readline()
+          board.append(value.strip("\n").split(","))
+        open_file.close()
+        L1 = "".join(board[0])
+        L2 = "".join(board[1])
+        L3 = "".join(board[2])
+        L4 = "".join(board[3])
+        L5 = "".join(board[4])
+        L6 = "".join(board[5])
+        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+        await ctx.send(message, view=view1)
     else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await ctx.send(message, view=view1)
+      await ctx.send(str(ctx.author.name) + ", this is not your game")
 
   async def button6Clicked(interaction):
-
-    x = place(ctx.author.name + "#", 0, 6)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
+    if os.path.exists(str(ctx.author.name)+ "#"):
+      x = place(ctx.author.name + "#", 0, 6)
+      if x == "Invalid Move":
+        await ctx.send("Invalid Move")
+      else:
+        open_file = open(ctx.author.name + "#", "r")
+        board = []
+        for _ in range(6):
+          value = open_file.readline()
+          board.append(value.strip("\n").split(","))
+        open_file.close()
+        L1 = "".join(board[0])
+        L2 = "".join(board[1])
+        L3 = "".join(board[2])
+        L4 = "".join(board[3])
+        L5 = "".join(board[4])
+        L6 = "".join(board[5])
+        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+        await ctx.send(message, view=view1)
     else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await ctx.send(message, view=view1)
+      await ctx.send(str(ctx.author.name) + ", this is not your game")
 
   async def button7Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 7)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
+    if os.path.exists(str(ctx.author.name)+ "#"):
+      x = place(ctx.author.name + "#", 0, 7)
+      if x == "Invalid Move":
+        await ctx.send("Invalid Move")
+      else:
+        open_file = open(ctx.author.name + "#", "r")
+        board = []
+        for _ in range(6):
+          value = open_file.readline()
+          board.append(value.strip("\n").split(","))
+        open_file.close()
+        L1 = "".join(board[0])
+        L2 = "".join(board[1])
+        L3 = "".join(board[2])
+        L4 = "".join(board[3])
+        L5 = "".join(board[4])
+        L6 = "".join(board[5])
+        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+        await ctx.send(message, view=view1)
     else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await ctx.send(message, view=view1)
+      await ctx.send(str(ctx.author.name) + ", this is not your game")
 
   button1.callback = button1Clicked
   button2.callback = button2Clicked
