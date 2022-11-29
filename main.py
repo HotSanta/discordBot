@@ -774,9 +774,9 @@ def place(name, Line, row):
       Line += 1
     else:
       Place = False
-  if not board[0][row - 1] == piece:
+  if not board[0][row - 1] == piece.strip("\n"):
     Line -= 1
-    board[Line][row - 1] = piece
+    board[Line][row - 1] = piece.strip("\n")
     Line1 = ",".join(board[0])
     Line2 = ",".join(board[1])
     Line3 = ",".join(board[2])
@@ -871,9 +871,8 @@ async def Connect4(ctx, message):
         piece = open_file.readline()
         turn = open_file.readline()
         open_file.close()
-        print("hi")
-        if turn == "Turn":
-          print("hi")
+        if turn.strip("\n") == "Turn":
+
           x = place(ctx.author.name + "#", 0, 1)
           if x == "Invalid Move":
             await ctx.send("Invalid Move")
