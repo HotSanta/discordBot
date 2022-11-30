@@ -849,7 +849,6 @@ async def Connect4(ctx):
                    row=1)
 
   async def button1Clicked(interaction):
-
     x = place(ctx.author.name + "#", 0, 1)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
@@ -869,6 +868,7 @@ async def Connect4(ctx):
       L6 = "".join(board[5])
       message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await m.edit(content=message, view=view1) 
+      await interaction.response.defer()
 
   async def button2Clicked(interaction):
 
@@ -891,6 +891,7 @@ async def Connect4(ctx):
       L6 = "".join(board[5])
       message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await m.edit(content=message, view=view1) 
+      await interaction.response.defer()
 
 
   async def button3Clicked(interaction):
@@ -912,7 +913,8 @@ async def Connect4(ctx):
       L5 = "".join(board[4])
       L6 = "".join(board[5])
       message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1) 
+      await m.edit(content=message, view=view1)
+      await interaction.response.defer()
 
   async def button4Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 4)
@@ -934,6 +936,7 @@ async def Connect4(ctx):
       L6 = "".join(board[5])
       message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await m.edit(content=message, view=view1) 
+      await interaction.response.defer()
 
   async def button5Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 5)
@@ -955,6 +958,7 @@ async def Connect4(ctx):
       L6 = "".join(board[5])
       message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await m.edit(content=message, view=view1) 
+      await interaction.response.defer()
       
   async def button6Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 6)
@@ -976,6 +980,7 @@ async def Connect4(ctx):
       L6 = "".join(board[5])
       message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await m.edit(content=message, view=view1) 
+      await interaction.response.defer()
 
   async def button7Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 7)
@@ -997,6 +1002,7 @@ async def Connect4(ctx):
       L6 = "".join(board[5])
       message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await m.edit(content=message, view=view1) 
+      await interaction.response.defer()
       
   button1.callback = button1Clicked
   button2.callback = button2Clicked
