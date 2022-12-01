@@ -773,28 +773,26 @@ def place(name, Line, row):
       Line += 1
     else:
       Place = False
-  if not (board[0][row - 1] == piece or board[0][row - 1] == ":red_circle:"):
-    Line -= 1
-    board[Line][row - 1] = piece
-    Line1 = ",".join(board[0])
-    Line2 = ",".join(board[1])
-    Line3 = ",".join(board[2])
-    Line4 = ",".join(board[3])
-    Line5 = ",".join(board[4])
-    Line6 = ",".join(board[5])
-    Lines = [Line1, Line2, Line3, Line4, Line5, Line6]
-    phrase = "\n".join(Lines)
-    new_piece = ""
-    if piece == ":green_circle:":
-      new_piece = ":red_circle:\n"
-    elif piece == ":red_circle:":
-      new_piece = ":green_circle:\n"
-    open_file = open(name, "w")
-    open_file.write(new_piece + phrase)
-    open_file.close()
-    return "Valid Move"
-  else:
-    return "Invalid Move"
+  Line -= 1
+  board[Line][row - 1] = piece
+  Line1 = ",".join(board[0])
+  Line2 = ",".join(board[1])
+  Line3 = ",".join(board[2])
+  Line4 = ",".join(board[3])
+  Line5 = ",".join(board[4])
+  Line6 = ",".join(board[5])
+  Lines = [Line1, Line2, Line3, Line4, Line5, Line6]
+  phrase = "\n".join(Lines)
+  new_piece = ""
+  if piece == ":green_circle:":
+    new_piece = ":red_circle:\n"
+  elif piece == ":red_circle:":
+    new_piece = ":green_circle:\n"
+  open_file = open(name, "w")
+  open_file.write(new_piece + phrase)
+  open_file.close()
+  if board[0][row - 1] == piece:
+    return "Full row"
 
 
 @bot.command(
@@ -853,165 +851,150 @@ async def Connect4(ctx):
 
   async def button1Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 1)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
-      await interaction.response.defer()
-    else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      piece = open_file.readline()
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1)
-      await interaction.response.defer()
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full Row":
+      button1.disabled = True
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button2Clicked(interaction):
-
     x = place(ctx.author.name + "#", 0, 2)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
-      await interaction.response.defer()
-    else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      piece = open_file.readline()
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1)
-      await interaction.response.defer()
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full Row":
+      button2.disabled = True
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button3Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 3)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
-      await interaction.response.defer()
-    else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      piece = open_file.readline()
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1)
-      await interaction.response.defer()
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full Row":
+      button3.disabled = True
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button4Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 4)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
-      await interaction.response.defer()
-    else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      piece = open_file.readline()
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1)
-      await interaction.response.defer()
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full Row":
+      button4.disabled = True
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button5Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 5)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
-      await interaction.response.defer()
-    else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      piece = open_file.readline()
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1)
-      await interaction.response.defer()
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full Row":
+      button5.disabled = True
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button6Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 6)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
-      await interaction.response.defer()
-    else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      piece = open_file.readline()
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1)
-      await interaction.response.defer()
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full Row":
+      button6.disabled = True
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button7Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 7)
-    if x == "Invalid Move":
-      await ctx.send("Invalid Move")
-      await interaction.response.defer()
-    else:
-      open_file = open(ctx.author.name + "#", "r")
-      board = []
-      piece = open_file.readline()
-      for _ in range(6):
-        value = open_file.readline()
-        board.append(value.strip("\n").split(","))
-      open_file.close()
-      L1 = "".join(board[0])
-      L2 = "".join(board[1])
-      L3 = "".join(board[2])
-      L4 = "".join(board[3])
-      L5 = "".join(board[4])
-      L6 = "".join(board[5])
-      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1)
-      await interaction.response.defer()
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full Row":
+      button7.disabled = True
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   button1.callback = button1Clicked
   button2.callback = button2Clicked
