@@ -792,6 +792,7 @@ def place(name, Line, row):
   open_file.write(new_piece + phrase)
   open_file.close()
   if board[0][row - 1] == piece:
+    print("hmmm")
     return "Full row"
 
 
@@ -851,6 +852,7 @@ async def Connect4(ctx):
 
   async def button1Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 1)
+    print(x)
     open_file = open(ctx.author.name + "#", "r")
     board = []
     piece = open_file.readline()
@@ -865,7 +867,8 @@ async def Connect4(ctx):
     L5 = "".join(board[4])
     L6 = "".join(board[5])
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-    if x == "Full Row":
+    if x == "Full row":
+      print("hmmm")
       button1.disabled = True
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -886,7 +889,7 @@ async def Connect4(ctx):
     L5 = "".join(board[4])
     L6 = "".join(board[5])
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-    if x == "Full Row":
+    if x == "Full row":
       button2.disabled = True
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -907,7 +910,7 @@ async def Connect4(ctx):
     L5 = "".join(board[4])
     L6 = "".join(board[5])
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-    if x == "Full Row":
+    if x == "Full row":
       button3.disabled = True
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -928,7 +931,7 @@ async def Connect4(ctx):
     L5 = "".join(board[4])
     L6 = "".join(board[5])
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-    if x == "Full Row":
+    if x == "Full row":
       button4.disabled = True
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -949,7 +952,7 @@ async def Connect4(ctx):
     L5 = "".join(board[4])
     L6 = "".join(board[5])
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-    if x == "Full Row":
+    if x == "Full row":
       button5.disabled = True
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -970,7 +973,7 @@ async def Connect4(ctx):
     L5 = "".join(board[4])
     L6 = "".join(board[5])
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-    if x == "Full Row":
+    if x == "Full row":
       button6.disabled = True
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -991,7 +994,7 @@ async def Connect4(ctx):
     L5 = "".join(board[4])
     L6 = "".join(board[5])
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-    if x == "Full Row":
+    if x == "Full row":
       button7.disabled = True
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
