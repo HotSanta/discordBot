@@ -756,6 +756,9 @@ async def TicTacToe(ctx):
 
 #============================================================
 
+# get rid of the returing invalid. Once placed, check if board[0][row-1] == piece, then disable the passed in buttons
+
+
 def place(name, Line, row):
   open_file = open(name, "r")
   board = []
@@ -770,7 +773,7 @@ def place(name, Line, row):
       Line += 1
     else:
       Place = False
-  if not board[0][row - 1] == piece:
+  if not (board[0][row - 1] == piece or board[0][row - 1] == ":red_circle:"):
     Line -= 1
     board[Line][row - 1] = piece
     Line1 = ",".join(board[0])
@@ -852,6 +855,7 @@ async def Connect4(ctx):
     x = place(ctx.author.name + "#", 0, 1)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
+      await interaction.response.defer()
     else:
       open_file = open(ctx.author.name + "#", "r")
       board = []
@@ -866,8 +870,8 @@ async def Connect4(ctx):
       L4 = "".join(board[3])
       L5 = "".join(board[4])
       L6 = "".join(board[5])
-      message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1) 
+      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+      await m.edit(content=message, view=view1)
       await interaction.response.defer()
 
   async def button2Clicked(interaction):
@@ -875,6 +879,7 @@ async def Connect4(ctx):
     x = place(ctx.author.name + "#", 0, 2)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
+      await interaction.response.defer()
     else:
       open_file = open(ctx.author.name + "#", "r")
       board = []
@@ -889,15 +894,15 @@ async def Connect4(ctx):
       L4 = "".join(board[3])
       L5 = "".join(board[4])
       L6 = "".join(board[5])
-      message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1) 
+      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+      await m.edit(content=message, view=view1)
       await interaction.response.defer()
-
 
   async def button3Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 3)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
+      await interaction.response.defer()
     else:
       open_file = open(ctx.author.name + "#", "r")
       board = []
@@ -912,7 +917,7 @@ async def Connect4(ctx):
       L4 = "".join(board[3])
       L5 = "".join(board[4])
       L6 = "".join(board[5])
-      message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
       await m.edit(content=message, view=view1)
       await interaction.response.defer()
 
@@ -920,6 +925,7 @@ async def Connect4(ctx):
     x = place(ctx.author.name + "#", 0, 4)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
+      await interaction.response.defer()
     else:
       open_file = open(ctx.author.name + "#", "r")
       board = []
@@ -934,14 +940,15 @@ async def Connect4(ctx):
       L4 = "".join(board[3])
       L5 = "".join(board[4])
       L6 = "".join(board[5])
-      message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1) 
+      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+      await m.edit(content=message, view=view1)
       await interaction.response.defer()
 
   async def button5Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 5)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
+      await interaction.response.defer()
     else:
       open_file = open(ctx.author.name + "#", "r")
       board = []
@@ -956,14 +963,15 @@ async def Connect4(ctx):
       L4 = "".join(board[3])
       L5 = "".join(board[4])
       L6 = "".join(board[5])
-      message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1) 
+      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+      await m.edit(content=message, view=view1)
       await interaction.response.defer()
-      
+
   async def button6Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 6)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
+      await interaction.response.defer()
     else:
       open_file = open(ctx.author.name + "#", "r")
       board = []
@@ -978,14 +986,15 @@ async def Connect4(ctx):
       L4 = "".join(board[3])
       L5 = "".join(board[4])
       L6 = "".join(board[5])
-      message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1) 
+      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+      await m.edit(content=message, view=view1)
       await interaction.response.defer()
 
   async def button7Clicked(interaction):
     x = place(ctx.author.name + "#", 0, 7)
     if x == "Invalid Move":
       await ctx.send("Invalid Move")
+      await interaction.response.defer()
     else:
       open_file = open(ctx.author.name + "#", "r")
       board = []
@@ -1000,10 +1009,10 @@ async def Connect4(ctx):
       L4 = "".join(board[3])
       L5 = "".join(board[4])
       L6 = "".join(board[5])
-      message = piece + " turn\n" +L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-      await m.edit(content=message, view=view1) 
+      message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+      await m.edit(content=message, view=view1)
       await interaction.response.defer()
-      
+
   button1.callback = button1Clicked
   button2.callback = button2Clicked
   button3.callback = button3Clicked
@@ -1020,9 +1029,9 @@ async def Connect4(ctx):
   view1.add_item(button6)
   view1.add_item(button7)
 
-  m = await ctx.send(piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" +
-                 L6,
-                 view=view1)
+  m = await ctx.send(piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" +
+                     L4 + "\n" + L5 + "\n" + L6,
+                     view=view1)
 
 
 #============================================================
