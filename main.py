@@ -756,7 +756,7 @@ async def TicTacToe(ctx):
 
 #============================================================
 
-# get rid of the returing invalid. Once placed, check if board[0][row-1] == piece, then disable the passed in buttons
+# just needs checks for wins
 
 
 def place(name, Line, row):
@@ -775,6 +775,7 @@ def place(name, Line, row):
       Place = False
   Line -= 1
   board[Line][row - 1] = piece
+  lastPlayed = str(Line) + "," + str(row-1)
   Line1 = ",".join(board[0])
   Line2 = ",".join(board[1])
   Line3 = ",".join(board[2])
@@ -792,8 +793,10 @@ def place(name, Line, row):
   open_file.write(new_piece + phrase)
   open_file.close()
   if board[0][row - 1] == piece:
-    print("hmmm")
-    return "Full row"
+    phrase = "Full row" + "|" + lastPlayed
+    return phrase
+  phrase = "unfull row" + "|" + lastPlayed
+  return phrase
 
 
 @bot.command(
@@ -851,8 +854,10 @@ async def Connect4(ctx):
                    row=1)
 
   async def button1Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 1)
-    print(x)
+    returns = place(ctx.author.name + "#", 0, 1)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
     piece = open_file.readline()
@@ -868,13 +873,15 @@ async def Connect4(ctx):
     L6 = "".join(board[5])
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
     if x == "Full row":
-      print("hmmm")
       button1.disabled = True
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
   async def button2Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 2)
+    returns = place(ctx.author.name + "#", 0, 2)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
     piece = open_file.readline()
@@ -895,7 +902,10 @@ async def Connect4(ctx):
     await interaction.response.defer()
 
   async def button3Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 3)
+    returns = place(ctx.author.name + "#", 0, 3)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
     piece = open_file.readline()
@@ -916,7 +926,10 @@ async def Connect4(ctx):
     await interaction.response.defer()
 
   async def button4Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 4)
+    returns = place(ctx.author.name + "#", 0, 4)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
     piece = open_file.readline()
@@ -937,7 +950,10 @@ async def Connect4(ctx):
     await interaction.response.defer()
 
   async def button5Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 5)
+    returns = place(ctx.author.name + "#", 0, 5)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
     piece = open_file.readline()
@@ -958,7 +974,10 @@ async def Connect4(ctx):
     await interaction.response.defer()
 
   async def button6Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 6)
+    returns = place(ctx.author.name + "#", 0, 6)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
     piece = open_file.readline()
@@ -979,7 +998,10 @@ async def Connect4(ctx):
     await interaction.response.defer()
 
   async def button7Clicked(interaction):
-    x = place(ctx.author.name + "#", 0, 7)
+    returns = place(ctx.author.name + "#", 0, 7)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
     piece = open_file.readline()
