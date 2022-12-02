@@ -769,12 +769,13 @@ def checks(piece, last, name):
   cords = last.split(',')
   i = int(cords[0]) # row
   j = int(cords[1]) # collum
-  #checks if in position to have win to left
+  
+  # checks for 000_
   if j > 2:
     if board[i][j - 1] == piece and board[i][j - 2] == piece and board[i][
         j - 3] == piece:
       return piece + " won"
-  # checks if in positon to win to right
+  # checks for _000
   if j < 4:
     if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
         j + 3] == piece:
@@ -784,7 +785,14 @@ def checks(piece, last, name):
     if board[i+1][j] == piece and board[i+2][j] == piece and board[i+3][
         j] == piece:
       return piece + " won"
-
+  #check if you place in a 00_0
+  if not j in [0,1,6]:
+    if board[i][j + 1] == piece and board[i][j - 1] == piece and board[i][j - 2] == piece:
+      return piece + " won"
+  #check for 0_00
+  if not j in [0,5,6]:
+    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][j - 1] == piece:
+      return piece + " won"
           
 def place(name, Line, row):
   open_file = open(name, "r")
@@ -911,9 +919,11 @@ async def Connect4(ctx):
 
     if answer == ":green_circle: won":
       message += "\n:green_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     elif answer == ":red_circle: won":
       message += "\n:red_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -949,9 +959,13 @@ async def Connect4(ctx):
 
     if answer == ":green_circle: won":
       message += "\n:green_circle: Won"
+      view1.clear_items()
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     elif answer == ":red_circle: won":
       message += "\n:red_circle: Won"
+      view1.clear_items()
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -987,9 +1001,11 @@ async def Connect4(ctx):
 
     if answer == ":green_circle: won":
       message += "\n:green_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     elif answer == ":red_circle: won":
       message += "\n:red_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -1025,9 +1041,11 @@ async def Connect4(ctx):
 
     if answer == ":green_circle: won":
       message += "\n:green_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     elif answer == ":red_circle: won":
       message += "\n:red_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -1063,9 +1081,11 @@ async def Connect4(ctx):
 
     if answer == ":green_circle: won":
       message += "\n:green_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     elif answer == ":red_circle: won":
       message += "\n:red_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -1101,9 +1121,11 @@ async def Connect4(ctx):
 
     if answer == ":green_circle: won":
       message += "\n:green_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     elif answer == ":red_circle: won":
       message += "\n:red_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
@@ -1139,9 +1161,11 @@ async def Connect4(ctx):
 
     if answer == ":green_circle: won":
       message += "\n:green_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     elif answer == ":red_circle: won":
       message += "\n:red_circle: Won"
+      view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
