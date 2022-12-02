@@ -756,7 +756,7 @@ async def TicTacToe(ctx):
 
 #============================================================
 
-# need diagonal checks
+# need diagonal checks for middle two pieces
 
 def checks(piece, last, name):
   board = []
@@ -792,6 +792,23 @@ def checks(piece, last, name):
   #check for 0_00
   if not j in [0,5,6]:
     if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][j - 1] == piece:
+      return piece + " won"
+  # check for top piece of a down-right diagonal
+  if i < 3 and j < 4:
+    if board[i+1][j + 1] == piece and board[i+2][j + 2] == piece and board[i+3][j+3] == piece:
+      return piece + " won"
+  # check for bottom piece of a down-right diagonal
+  if i>2 and j>2:
+    if board[i-1][j - 1] == piece and board[i-2][j - 2] == piece and board[i-3][j-3] == piece:
+      return piece + " won"
+  # above are confirmed working, bottom two are untested
+  # check for top piece of down-left diagonal
+  if i < 3 and j > 2:
+    if board[i+1][j - 1] == piece and board[i+2][j - 2] == piece and board[i+3][j-3] == piece:
+      return piece + " won"
+  # check for bottom piece of down-left diagonal
+  if i > 2 and j < 4:
+    if board[i-1][j + 1] == piece and board[i-2][j + 2] == piece and board[i-3][j+3] == piece:
       return piece + " won"
           
 def place(name, Line, row):
