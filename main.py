@@ -756,7 +756,7 @@ async def TicTacToe(ctx):
 
 #============================================================
 
-# only have checks for end pieces
+# need diagonal checks
 
 def checks(piece, last, name):
   board = []
@@ -767,8 +767,8 @@ def checks(piece, last, name):
     board.append(value.strip("\n").split(","))
   open_file.close()
   cords = last.split(',')
-  i = int(cords[0]) # row
-  j = int(cords[1]) # collum
+  i = int(cords[0]) # row/x
+  j = int(cords[1]) # collum/y
   
   # checks for 000_
   if j > 2:
@@ -925,6 +925,12 @@ async def Connect4(ctx):
       message += "\n:red_circle: Won"
       view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
+    else:
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -967,6 +973,12 @@ async def Connect4(ctx):
       view1.clear_items()
       view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
+    else:
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -1007,6 +1019,12 @@ async def Connect4(ctx):
       message += "\n:red_circle: Won"
       view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
+    else:
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -1047,6 +1065,12 @@ async def Connect4(ctx):
       message += "\n:red_circle: Won"
       view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
+    else:
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -1087,6 +1111,12 @@ async def Connect4(ctx):
       message += "\n:red_circle: Won"
       view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
+    else:
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -1127,6 +1157,12 @@ async def Connect4(ctx):
       message += "\n:red_circle: Won"
       view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
+    else:
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -1167,9 +1203,16 @@ async def Connect4(ctx):
       message += "\n:red_circle: Won"
       view1.clear_items()
       os.remove(str(ctx.author.name) + "#")
+    else:
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
+  
   button1.callback = button1Clicked
   button2.callback = button2Clicked
   button3.callback = button3Clicked
@@ -1177,6 +1220,10 @@ async def Connect4(ctx):
   button5.callback = button5Clicked
   button6.callback = button6Clicked
   button7.callback = button7Clicked
+    
+  async def fullBoardCheck():
+    if button1.disabled == True and button2.disabled == True and button3.disabled == True and button4.disabled == True and button5.disabled == True and button6.disabled == True and button7.disabled == True:
+      return "Full"
   view1 = View()
   view1.add_item(button1)
   view1.add_item(button2)
