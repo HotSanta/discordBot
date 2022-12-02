@@ -756,9 +756,36 @@ async def TicTacToe(ctx):
 
 #============================================================
 
-# just needs checks for wins
+# only have checks for end pieces
 
+def checks(piece, last, name):
+  board = []
+  open_file = open(name, "r")
+  thing = open_file.readline()
+  for x in range(6):
+    value = open_file.readline()
+    board.append(value.strip("\n").split(","))
+  open_file.close()
+  cords = last.split(',')
+  i = int(cords[0]) # row
+  j = int(cords[1]) # collum
+  #checks if in position to have win to left
+  if j > 2:
+    if board[i][j - 1] == piece and board[i][j - 2] == piece and board[i][
+        j - 3] == piece:
+      return piece + " won"
+  # checks if in positon to win to right
+  if j < 4:
+    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
+        j + 3] == piece:
+      return piece + " won"
+  # checks for downs
+  if i < 3:
+    if board[i+1][j] == piece and board[i+2][j] == piece and board[i+3][
+        j] == piece:
+      return piece + " won"
 
+          
 def place(name, Line, row):
   open_file = open(name, "r")
   board = []
@@ -775,7 +802,7 @@ def place(name, Line, row):
       Place = False
   Line -= 1
   board[Line][row - 1] = piece
-  lastPlayed = str(Line) + "," + str(row-1)
+  lastPlayed = str(Line) + "," + str(row - 1)
   Line1 = ",".join(board[0])
   Line2 = ",".join(board[1])
   Line3 = ",".join(board[2])
@@ -874,6 +901,20 @@ async def Connect4(ctx):
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
     if x == "Full row":
       button1.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -898,6 +939,20 @@ async def Connect4(ctx):
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
     if x == "Full row":
       button2.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -922,6 +977,20 @@ async def Connect4(ctx):
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
     if x == "Full row":
       button3.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -946,6 +1015,20 @@ async def Connect4(ctx):
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
     if x == "Full row":
       button4.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -970,6 +1053,20 @@ async def Connect4(ctx):
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
     if x == "Full row":
       button5.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -994,6 +1091,20 @@ async def Connect4(ctx):
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
     if x == "Full row":
       button6.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
@@ -1018,6 +1129,20 @@ async def Connect4(ctx):
     message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
     if x == "Full row":
       button7.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      os.remove(str(ctx.author.name) + "#")
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
