@@ -755,12 +755,89 @@ async def TicTacToe(ctx):
 
 
 #============================================================
-# add alternating for two people
-# use os.path.exists() to make sure person playing person playing
-# minmax solution for bot plays
+
+# need diagonal checks for middle two pieces
+
+
+def checks(piece, last, name):
+  board = []
+  open_file = open(name, "r")
+  thing = open_file.readline()
+  for x in range(6):
+    value = open_file.readline()
+    board.append(value.strip("\n").split(","))
+  open_file.close()
+  cords = last.split(',')
+  i = int(cords[0])  # row/x
+  j = int(cords[1])  # collum/y
+
+  # checks for 000_
+  if j > 2:
+    if board[i][j - 1] == piece and board[i][j - 2] == piece and board[i][
+        j - 3] == piece:
+      return piece + " won"
+  # checks for _000
+  if j < 4:
+    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
+        j + 3] == piece:
+      return piece + " won"
+  # checks for downs
+  if i < 3:
+    if board[i + 1][j] == piece and board[i + 2][j] == piece and board[
+        i + 3][j] == piece:
+      return piece + " won"
+  #check if you place in a 00_0
+  if not j in [0, 1, 6]:
+    if board[i][j + 1] == piece and board[i][j - 1] == piece and board[i][
+        j - 2] == piece:
+      return piece + " won"
+  #check for 0_00
+  if not j in [0, 5, 6]:
+    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
+        j - 1] == piece:
+      return piece + " won"
+  # check for top piece of a down-right diagonal
+  if i < 3 and j < 4:
+    if board[i + 1][j + 1] == piece and board[i + 2][j + 2] == piece and board[
+        i + 3][j + 3] == piece:
+      return piece + " won"
+  # check for bottom piece of a down-right diagonal
+  if i > 2 and j > 2:
+    if board[i - 1][j - 1] == piece and board[i - 2][j - 2] == piece and board[
+        i - 3][j - 3] == piece:
+      return piece + " won"
+
+  # check for top piece of down-left diagonal
+  if i < 3 and j > 2:
+    if board[i + 1][j - 1] == piece and board[i + 2][j - 2] == piece and board[
+        i + 3][j - 3] == piece:
+      return piece + " won"
+  # check for bottom piece of down-left diagonal
+  if i > 2 and j < 4:
+    if board[i - 1][j + 1] == piece and board[i - 2][j + 2] == piece and board[
+        i - 3][j + 3] == piece:
+      return piece + " won"
+  # check for 2nd top piece of down-right diagonal
+  if i in [1,2,3] and j in [1,2,3,4]:
+    if board[i - 1][j - 1] == piece and board[i +1 ][j + 1] == piece and board[i +2][j +2] == piece:
+      return piece + " won"
+  # check for 3rd piece of down-right diagonal
+  if i in [2,3,4] and j in [2,3,4,5]:
+    if board[i - 1][j - 1] == piece and board[i -2 ][j -2] == piece and board[i +1][j +1] == piece:
+      return piece + " won"
+  # check for 2nd piece of down-left diagonal
+  if i in [1,2,3] and j in [2,3,4,5]:
+    if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i +2][j -2] == piece:
+      return piece + " won"
+  # check for 3rd piece in down-left diagonal
+  if i in [2,3,4] and j in [1,2,3,4]:
+    if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i -2][j +2] == piece:
+      return piece + " won"
+
 def place(name, Line, row):
   open_file = open(name, "r")
   board = []
+  piece = open_file.readline().strip("\n")
   for x in range(6):
     value = open_file.readline()
     board.append(value.strip("\n").split(","))
@@ -771,23 +848,30 @@ def place(name, Line, row):
       Line += 1
     else:
       Place = False
-  if not board[0][row - 1] == ":green_circle:":
-    Line -= 1
-    board[Line][row - 1] = ":green_circle:"
-    Line1 = ",".join(board[0])
-    Line2 = ",".join(board[1])
-    Line3 = ",".join(board[2])
-    Line4 = ",".join(board[3])
-    Line5 = ",".join(board[4])
-    Line6 = ",".join(board[5])
-    Lines = [Line1, Line2, Line3, Line4, Line5, Line6]
-    phrase = "\n".join(Lines)
-    open_file = open(name, "w")
-    open_file.write(phrase)
-    open_file.close()
-    return "Valid Move"
-  else:
-    return "Invalid Move"
+  Line -= 1
+  board[Line][row - 1] = piece
+  lastPlayed = str(Line) + "," + str(row - 1)
+  Line1 = ",".join(board[0])
+  Line2 = ",".join(board[1])
+  Line3 = ",".join(board[2])
+  Line4 = ",".join(board[3])
+  Line5 = ",".join(board[4])
+  Line6 = ",".join(board[5])
+  Lines = [Line1, Line2, Line3, Line4, Line5, Line6]
+  phrase = "\n".join(Lines)
+  new_piece = ""
+  if piece == ":green_circle:":
+    new_piece = ":red_circle:\n"
+  elif piece == ":red_circle:":
+    new_piece = ":green_circle:\n"
+  open_file = open(name, "w")
+  open_file.write(new_piece + phrase)
+  open_file.close()
+  if board[0][row - 1] == piece:
+    phrase = "Full row" + "|" + lastPlayed
+    return phrase
+  phrase = "unfull row" + "|" + lastPlayed
+  return phrase
 
 
 @bot.command(
@@ -798,11 +882,12 @@ def place(name, Line, row):
 async def Connect4(ctx):
   open_file = open(ctx.author.name + "#", "w")
   open_file.write(
-    ":white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
+    ":green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
   )
   open_file.close()
   open_file = open(ctx.author.name + "#", "r")
   board = []
+  piece = open_file.readline()
   for _ in range(6):
     value = open_file.readline()
     board.append(value.strip("\n").split(","))
@@ -844,165 +929,328 @@ async def Connect4(ctx):
                    row=1)
 
   async def button1Clicked(interaction):
-    if os.path.exists(str(ctx.author.name)+ "#"):
-      x = place(ctx.author.name + "#", 0, 1)
-      if x == "Invalid Move":
-        await ctx.send("Invalid Move")
-      else:
-        open_file = open(ctx.author.name + "#", "r")
-        board = []
-        for _ in range(6):
-          value = open_file.readline()
-          board.append(value.strip("\n").split(","))
-        open_file.close()
-        L1 = "".join(board[0])
-        L2 = "".join(board[1])
-        L3 = "".join(board[2])
-        L4 = "".join(board[3])
-        L5 = "".join(board[4])
-        L6 = "".join(board[5])
-        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-        await ctx.send(message, view=view1)
+    returns = place(ctx.author.name + "#", 0, 1)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full row":
+      button1.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
     else:
-      await ctx.send(str(ctx.author.name) + ", this is not your game")
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button2Clicked(interaction):
-    if os.path.exists(str(ctx.author.name)+ "#"):
-      x = place(ctx.author.name + "#", 0, 2)
-      if x == "Invalid Move":
-        await ctx.send("Invalid Move")
-      else:
-        open_file = open(ctx.author.name + "#", "r")
-        board = []
-        for _ in range(6):
-          value = open_file.readline()
-          board.append(value.strip("\n").split(","))
-        open_file.close()
-        L1 = "".join(board[0])
-        L2 = "".join(board[1])
-        L3 = "".join(board[2])
-        L4 = "".join(board[3])
-        L5 = "".join(board[4])
-        L6 = "".join(board[5])
-        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-        await ctx.send(message, view=view1)
+    returns = place(ctx.author.name + "#", 0, 2)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full row":
+      button2.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      view1.clear_items()
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      view1.clear_items()
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
     else:
-      await ctx.send(str(ctx.author.name) + ", this is not your game")
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button3Clicked(interaction):
-    if os.path.exists(str(ctx.author.name)+ "#"):
-      x = place(ctx.author.name + "#", 0, 3)
-      if x == "Invalid Move":
-        await ctx.send("Invalid Move")
-      else:
-        open_file = open(ctx.author.name + "#", "r")
-        board = []
-        for _ in range(6):
-          value = open_file.readline()
-          board.append(value.strip("\n").split(","))
-        open_file.close()
-        L1 = "".join(board[0])
-        L2 = "".join(board[1])
-        L3 = "".join(board[2])
-        L4 = "".join(board[3])
-        L5 = "".join(board[4])
-        L6 = "".join(board[5])
-        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-        await ctx.send(message, view=view1)
+    returns = place(ctx.author.name + "#", 0, 3)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full row":
+      button3.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
     else:
-      await ctx.send(str(ctx.author.name) + ", this is not your game")
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button4Clicked(interaction):
-    if os.path.exists(str(ctx.author.name)+ "#"):
-      x = place(ctx.author.name + "#", 0, 4)
-      if x == "Invalid Move":
-        await ctx.send("Invalid Move")
-      else:
-        open_file = open(ctx.author.name + "#", "r")
-        board = []
-        for _ in range(6):
-          value = open_file.readline()
-          board.append(value.strip("\n").split(","))
-        open_file.close()
-        L1 = "".join(board[0])
-        L2 = "".join(board[1])
-        L3 = "".join(board[2])
-        L4 = "".join(board[3])
-        L5 = "".join(board[4])
-        L6 = "".join(board[5])
-        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-        await ctx.send(message, view=view1)
+    returns = place(ctx.author.name + "#", 0, 4)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full row":
+      button4.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
     else:
-      await ctx.send(str(ctx.author.name) + ", this is not your game")
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button5Clicked(interaction):
-    if os.path.exists(str(ctx.author.name)+ "#"):
-      x = place(ctx.author.name + "#", 0, 5)
-      if x == "Invalid Move":
-        await ctx.send("Invalid Move")
-      else:
-        open_file = open(ctx.author.name + "#", "r")
-        board = []
-        for _ in range(6):
-          value = open_file.readline()
-          board.append(value.strip("\n").split(","))
-        open_file.close()
-        L1 = "".join(board[0])
-        L2 = "".join(board[1])
-        L3 = "".join(board[2])
-        L4 = "".join(board[3])
-        L5 = "".join(board[4])
-        L6 = "".join(board[5])
-        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-        await ctx.send(message, view=view1)
+    returns = place(ctx.author.name + "#", 0, 5)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full row":
+      button5.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
     else:
-      await ctx.send(str(ctx.author.name) + ", this is not your game")
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button6Clicked(interaction):
-    if os.path.exists(str(ctx.author.name)+ "#"):
-      x = place(ctx.author.name + "#", 0, 6)
-      if x == "Invalid Move":
-        await ctx.send("Invalid Move")
-      else:
-        open_file = open(ctx.author.name + "#", "r")
-        board = []
-        for _ in range(6):
-          value = open_file.readline()
-          board.append(value.strip("\n").split(","))
-        open_file.close()
-        L1 = "".join(board[0])
-        L2 = "".join(board[1])
-        L3 = "".join(board[2])
-        L4 = "".join(board[3])
-        L5 = "".join(board[4])
-        L6 = "".join(board[5])
-        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-        await ctx.send(message, view=view1)
+    returns = place(ctx.author.name + "#", 0, 6)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full row":
+      button6.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
     else:
-      await ctx.send(str(ctx.author.name) + ", this is not your game")
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   async def button7Clicked(interaction):
-    if os.path.exists(str(ctx.author.name)+ "#"):
-      x = place(ctx.author.name + "#", 0, 7)
-      if x == "Invalid Move":
-        await ctx.send("Invalid Move")
-      else:
-        open_file = open(ctx.author.name + "#", "r")
-        board = []
-        for _ in range(6):
-          value = open_file.readline()
-          board.append(value.strip("\n").split(","))
-        open_file.close()
-        L1 = "".join(board[0])
-        L2 = "".join(board[1])
-        L3 = "".join(board[2])
-        L4 = "".join(board[3])
-        L5 = "".join(board[4])
-        L6 = "".join(board[5])
-        message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
-        await ctx.send(message, view=view1)
+    returns = place(ctx.author.name + "#", 0, 7)
+    items_returned = returns.split('|')
+    x = items_returned[0]
+    lastPlayed = items_returned[1]
+    open_file = open(ctx.author.name + "#", "r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    message = piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6
+    if x == "Full row":
+      button7.disabled = True
+    checkPiece = ""
+    if piece.strip("\n") == ":green_circle:":
+      checkPiece = ":red_circle:"
+    if piece.strip("\n") == ":red_circle:":
+      checkPiece = ":green_circle:"
+
+    answer = checks(checkPiece, lastPlayed, ctx.author.name + "#")
+
+    if answer == ":green_circle: won":
+      message += "\n:green_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
+    elif answer == ":red_circle: won":
+      message += "\n:red_circle: Won"
+      view1.clear_items()
+      os.remove(str(ctx.author.name) + "#")
     else:
-      await ctx.send(str(ctx.author.name) + ", this is not your game")
+      fullBoard = await fullBoardCheck()
+      if fullBoard == "Full":
+        message += "\nNo-One Won"
+        view1.clear_items()
+        os.remove(str(ctx.author.name) + "#")
+    await m.edit(content=message, view=view1)
+    await interaction.response.defer()
 
   button1.callback = button1Clicked
   button2.callback = button2Clicked
@@ -1011,6 +1259,11 @@ async def Connect4(ctx):
   button5.callback = button5Clicked
   button6.callback = button6Clicked
   button7.callback = button7Clicked
+
+  async def fullBoardCheck():
+    if button1.disabled == True and button2.disabled == True and button3.disabled == True and button4.disabled == True and button5.disabled == True and button6.disabled == True and button7.disabled == True:
+      return "Full"
+
   view1 = View()
   view1.add_item(button1)
   view1.add_item(button2)
@@ -1020,9 +1273,9 @@ async def Connect4(ctx):
   view1.add_item(button6)
   view1.add_item(button7)
 
-  await ctx.send(L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" +
-                 L6,
-                 view=view1)
+  m = await ctx.send(piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" +
+                     L4 + "\n" + L5 + "\n" + L6,
+                     view=view1)
 
 
 #============================================================
