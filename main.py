@@ -758,6 +758,7 @@ async def TicTacToe(ctx):
 
 # need diagonal checks for middle two pieces
 
+
 def checks(piece, last, name):
   board = []
   open_file = open(name, "r")
@@ -767,9 +768,9 @@ def checks(piece, last, name):
     board.append(value.strip("\n").split(","))
   open_file.close()
   cords = last.split(',')
-  i = int(cords[0]) # row/x
-  j = int(cords[1]) # collum/y
-  
+  i = int(cords[0])  # row/x
+  j = int(cords[1])  # collum/y
+
   # checks for 000_
   if j > 2:
     if board[i][j - 1] == piece and board[i][j - 2] == piece and board[i][
@@ -782,35 +783,57 @@ def checks(piece, last, name):
       return piece + " won"
   # checks for downs
   if i < 3:
-    if board[i+1][j] == piece and board[i+2][j] == piece and board[i+3][
-        j] == piece:
+    if board[i + 1][j] == piece and board[i + 2][j] == piece and board[
+        i + 3][j] == piece:
       return piece + " won"
   #check if you place in a 00_0
-  if not j in [0,1,6]:
-    if board[i][j + 1] == piece and board[i][j - 1] == piece and board[i][j - 2] == piece:
+  if not j in [0, 1, 6]:
+    if board[i][j + 1] == piece and board[i][j - 1] == piece and board[i][
+        j - 2] == piece:
       return piece + " won"
   #check for 0_00
-  if not j in [0,5,6]:
-    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][j - 1] == piece:
+  if not j in [0, 5, 6]:
+    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
+        j - 1] == piece:
       return piece + " won"
   # check for top piece of a down-right diagonal
   if i < 3 and j < 4:
-    if board[i+1][j + 1] == piece and board[i+2][j + 2] == piece and board[i+3][j+3] == piece:
+    if board[i + 1][j + 1] == piece and board[i + 2][j + 2] == piece and board[
+        i + 3][j + 3] == piece:
       return piece + " won"
   # check for bottom piece of a down-right diagonal
-  if i>2 and j>2:
-    if board[i-1][j - 1] == piece and board[i-2][j - 2] == piece and board[i-3][j-3] == piece:
+  if i > 2 and j > 2:
+    if board[i - 1][j - 1] == piece and board[i - 2][j - 2] == piece and board[
+        i - 3][j - 3] == piece:
       return piece + " won"
-  # above are confirmed working, bottom two are untested
+
   # check for top piece of down-left diagonal
   if i < 3 and j > 2:
-    if board[i+1][j - 1] == piece and board[i+2][j - 2] == piece and board[i+3][j-3] == piece:
+    if board[i + 1][j - 1] == piece and board[i + 2][j - 2] == piece and board[
+        i + 3][j - 3] == piece:
       return piece + " won"
   # check for bottom piece of down-left diagonal
   if i > 2 and j < 4:
-    if board[i-1][j + 1] == piece and board[i-2][j + 2] == piece and board[i-3][j+3] == piece:
+    if board[i - 1][j + 1] == piece and board[i - 2][j + 2] == piece and board[
+        i - 3][j + 3] == piece:
       return piece + " won"
-          
+  # check for 2nd top piece of down-right diagonal
+  if i in [1,2,3] and j in [1,2,3,4]:
+    if board[i - 1][j - 1] == piece and board[i +1 ][j + 1] == piece and board[i +2][j +2] == piece:
+      return piece + " won"
+  # check for 3rd piece of down-right diagonal
+  if i in [2,3,4] and j in [2,3,4,5]:
+    if board[i - 1][j - 1] == piece and board[i -2 ][j -2] == piece and board[i +1][j +1] == piece:
+      return piece + " won"
+  # check for 2nd piece of down-left diagonal
+  if i in [1,2,3] and j in [2,3,4,5]:
+    if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i +2][j -2] == piece:
+      return piece + " won"
+  # check for 3rd piece in down-left diagonal
+  if i in [2,3,4] and j in [1,2,3,4]:
+    if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i -2][j +2] == piece:
+      return piece + " won"
+
 def place(name, Line, row):
   open_file = open(name, "r")
   board = []
@@ -1229,7 +1252,6 @@ async def Connect4(ctx):
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
-  
   button1.callback = button1Clicked
   button2.callback = button2Clicked
   button3.callback = button3Clicked
@@ -1237,10 +1259,11 @@ async def Connect4(ctx):
   button5.callback = button5Clicked
   button6.callback = button6Clicked
   button7.callback = button7Clicked
-    
+
   async def fullBoardCheck():
     if button1.disabled == True and button2.disabled == True and button3.disabled == True and button4.disabled == True and button5.disabled == True and button6.disabled == True and button7.disabled == True:
       return "Full"
+
   view1 = View()
   view1.add_item(button1)
   view1.add_item(button2)
