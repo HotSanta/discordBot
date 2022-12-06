@@ -366,9 +366,6 @@ async def UrbanDef(ctx, message):
 player, opponent = ':x:', ':green_circle:'
 
 
-# This function returns true if there are moves
-# remaining on the board. It returns false if
-# there are no moves left to play.
 def isMovesLeft(board):
 
   for i in range(3):
@@ -757,8 +754,6 @@ async def TicTacToe(ctx):
 #============================================================
 
 
-
-
 def checks(piece, last, name):
   board = []
   open_file = open(name, "r")
@@ -769,81 +764,75 @@ def checks(piece, last, name):
   open_file.close()
   cords = last.split(',')
   i = int(cords[0])  # row/x
-  j = int(cords[1])
-  
+  j = int(cords[1])  # colum/y
+
   # checks for 000_
   if j > 2:
     if board[i][j - 1] == piece and board[i][j - 2] == piece and board[i][
         j - 3] == piece:
       return piece + " won"
   # checks for _000
-    else:
-      if j < 4:
-        if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
-            j + 3] == piece:
-          return piece + " won"
-        else:
-      # checks for downs
-          if i < 3:
-            if board[i + 1][j] == piece and board[i + 2][j] == piece and board[
-                i + 3][j] == piece:
-              return piece + " won"
-          #check if you place in a 00_0
-            else:
-              if not j in [0, 1, 6]:
-                if board[i][j + 1] == piece and board[i][j - 1] == piece and board[i][
-                    j - 2] == piece:
-                  return piece + " won"
-                else:
-              #check for 0_00
-                  if not j in [0, 5, 6]:
-                    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
-                        j - 1] == piece:
-                      return piece + " won"
-                  else:
-                  # check for top piece of a down-right diagonal
-                    if i < 3 and j < 4:
-                      if board[i + 1][j + 1] == piece and board[i + 2][j + 2] == piece and board[
-                          i + 3][j + 3] == piece:
-                        return piece + " won"
-                      else:
-                        # check for bottom piece of a down-right diagonal
-                        if i > 2 and j > 2:
-                          if board[i - 1][j - 1] == piece and board[i - 2][j - 2] == piece and board[
-                              i - 3][j - 3] == piece:
-                            return piece + " won"
-                          else:
-                        # check for top piece of down-left diagonal
-                            if i < 3 and j > 2:
-                              if board[i + 1][j - 1] == piece and board[i + 2][j - 2] == piece and board[
-                                  i + 3][j - 3] == piece:
-                                return piece + " won"
-                              else:
-                            # check for bottom piece of down-left diagonal
-                                if i > 2 and j < 4:
-                                  if board[i - 1][j + 1] == piece and board[i - 2][j + 2] == piece and board[
-                                      i - 3][j + 3] == piece:
-                                    return piece + " won"
-                                  else:
-                                    # check for 2nd top piece of down-right diagonal
-                                    if i in [1,2,3] and j in [1,2,3,4]:
-                                      if board[i - 1][j - 1] == piece and board[i +1 ][j + 1] == piece and board[i +2][j +2] == piece:
-                                        return piece + " won"
-                                      else:
-                                    # check for 3rd piece of down-right diagonal
-                                        if i in [2,3,4] and j in [2,3,4,5]:
-                                          if board[i - 1][j - 1] == piece and board[i -2 ][j -2] == piece and board[i +1][j +1] == piece:
-                                            return piece + " won"
-                                        # check for 2nd piece of down-left diagonal
-                                          else:
-                                            if i in [1,2,3] and j in [2,3,4,5]:
-                                              if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i +2][j -2] == piece:
-                                                return piece + " won"
-                                              else:
-                                                # check for 3rd piece in down-left diagonal
-                                                if i in [2,3,4] and j in [1,2,3,4]:
-                                                  if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i -2][j +2] == piece:
-                                                    return piece + " won"
+  if j < 4:
+    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
+        j + 3] == piece:
+      return piece + " won"
+  # checks for downs
+  if i < 3:
+    if board[i + 1][j] == piece and board[i + 2][j] == piece and board[
+        i + 3][j] == piece:
+      return piece + " won"
+  #check if you place in a 00_0
+  if not j in [0, 1, 6]:
+    if board[i][j + 1] == piece and board[i][j - 1] == piece and board[i][
+        j - 2] == piece:
+      return piece + " won"
+  #check for 0_00
+  if not j in [0, 5, 6]:
+    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
+        j - 1] == piece:
+      return piece + " won"
+  # check for top piece of a down-right diagonal
+  if i < 3 and j < 4:
+    if board[i + 1][j + 1] == piece and board[i + 2][j + 2] == piece and board[
+        i + 3][j + 3] == piece:
+      return piece + " won"
+  # check for bottom piece of a down-right diagonal
+  if i > 2 and j > 2:
+    if board[i - 1][j - 1] == piece and board[i - 2][j - 2] == piece and board[
+        i - 3][j - 3] == piece:
+      return piece + " won"
+
+  # check for top piece of down-left diagonal
+  if i < 3 and j > 2:
+    if board[i + 1][j - 1] == piece and board[i + 2][j - 2] == piece and board[
+        i + 3][j - 3] == piece:
+      return piece + " won"
+  # check for bottom piece of down-left diagonal
+  if i > 2 and j < 4:
+    if board[i - 1][j + 1] == piece and board[i - 2][j + 2] == piece and board[
+        i - 3][j + 3] == piece:
+      return piece + " won"
+  # check for 2nd top piece of down-right diagonal
+  if i in [1, 2, 3] and j in [1, 2, 3, 4]:
+    if board[i - 1][j - 1] == piece and board[i + 1][j + 1] == piece and board[
+        i + 2][j + 2] == piece:
+      return piece + " won"
+  # check for 3rd piece of down-right diagonal
+  if i in [2, 3, 4] and j in [2, 3, 4, 5]:
+    if board[i - 1][j - 1] == piece and board[i - 2][j - 2] == piece and board[
+        i + 1][j + 1] == piece:
+      return piece + " won"
+  # check for 2nd piece of down-left diagonal
+  if i in [1, 2, 3] and j in [2, 3, 4, 5]:
+    if board[i - 1][j + 1] == piece and board[i + 1][j - 1] == piece and board[
+        i + 2][j - 2] == piece:
+      return piece + " won"
+  # check for 3rd piece in down-left diagonal
+  if i in [2, 3, 4] and j in [1, 2, 3, 4]:
+    if board[i - 1][j + 1] == piece and board[i + 1][j - 1] == piece and board[
+        i - 2][j + 2] == piece:
+      return piece + " won"
+
 
 def place(name, Line, row):
   open_file = open(name, "r")
@@ -891,11 +880,12 @@ def place(name, Line, row):
   " Displays the board and buttons, which will place your piece in the desired lane",
   Arguements="None")
 async def Connect4(ctx):
-  open_file = open(ctx.author.name + "#", "w")
-  open_file.write(
-    ":green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
-  )
-  open_file.close()
+  if not os.path.exists(ctx.author.name + "#"):
+    open_file = open(ctx.author.name + "#", "w")
+    open_file.write(
+      ":green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
+    )
+    open_file.close()
   open_file = open(ctx.author.name + "#", "r")
   board = []
   piece = open_file.readline()
@@ -1287,6 +1277,23 @@ async def Connect4(ctx):
   m = await ctx.send(piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" +
                      L4 + "\n" + L5 + "\n" + L6,
                      view=view1)
+
+
+@bot.command(
+  brief=" Ends your Connect 4 Game",
+  description=" Deletes your started connect 4 game, if you have one playing",
+  Arguements="None")
+async def Connect4Delete(ctx):
+  if os.path.exists(ctx.author.name + "#"):
+    os.remove(ctx.author.name + "#")
+    await ctx.send(
+      ctx.author.name +
+      "'s Connect4 Game Has Been Deleted\nStart a New One using !loganConnect4"
+    )
+  else:
+    await ctx.send(
+      "You Are Not Currently Playing Connect 4\nBegin your Game using !loganConnect4"
+    )
 
 
 #============================================================
