@@ -757,6 +757,8 @@ async def TicTacToe(ctx):
 #============================================================
 
 
+
+
 def checks(piece, last, name):
   board = []
   open_file = open(name, "r")
@@ -767,7 +769,7 @@ def checks(piece, last, name):
   open_file.close()
   cords = last.split(',')
   i = int(cords[0])  # row/x
-  j = int(cords[1]) # colum/y
+  j = int(cords[1])
   
   # checks for 000_
   if j > 2:
@@ -775,61 +777,73 @@ def checks(piece, last, name):
         j - 3] == piece:
       return piece + " won"
   # checks for _000
-  if j < 4:
-    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
-        j + 3] == piece:
-      return piece + " won"
-  # checks for downs
-  if i < 3:
-    if board[i + 1][j] == piece and board[i + 2][j] == piece and board[
-        i + 3][j] == piece:
-      return piece + " won"
-  #check if you place in a 00_0
-  if not j in [0, 1, 6]:
-    if board[i][j + 1] == piece and board[i][j - 1] == piece and board[i][
-        j - 2] == piece:
-      return piece + " won"
-  #check for 0_00
-  if not j in [0, 5, 6]:
-    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
-        j - 1] == piece:
-      return piece + " won"
-  # check for top piece of a down-right diagonal
-  if i < 3 and j < 4:
-    if board[i + 1][j + 1] == piece and board[i + 2][j + 2] == piece and board[
-        i + 3][j + 3] == piece:
-      return piece + " won"
-  # check for bottom piece of a down-right diagonal
-  if i > 2 and j > 2:
-    if board[i - 1][j - 1] == piece and board[i - 2][j - 2] == piece and board[
-        i - 3][j - 3] == piece:
-      return piece + " won"
-
-  # check for top piece of down-left diagonal
-  if i < 3 and j > 2:
-    if board[i + 1][j - 1] == piece and board[i + 2][j - 2] == piece and board[
-        i + 3][j - 3] == piece:
-      return piece + " won"
-  # check for bottom piece of down-left diagonal
-  if i > 2 and j < 4:
-    if board[i - 1][j + 1] == piece and board[i - 2][j + 2] == piece and board[i - 3][j + 3] == piece:
-      return piece + " won"
-  # check for 2nd top piece of down-right diagonal
-  if i in [1,2,3] and j in [1,2,3,4]:
-    if board[i - 1][j - 1] == piece and board[i +1 ][j + 1] == piece and board[i +2][j +2] == piece:
-      return piece + " won"
-  # check for 3rd piece of down-right diagonal
-  if i in [2,3,4] and j in [2,3,4,5]:
-    if board[i - 1][j - 1] == piece and board[i -2 ][j -2] == piece and board[i +1][j +1] == piece:
-      return piece + " won"
-  # check for 2nd piece of down-left diagonal
-  if i in [1,2,3] and j in [2,3,4,5]:
-    if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i +2][j -2] == piece:
-      return piece + " won"
-  # check for 3rd piece in down-left diagonal
-  if i in [2,3,4] and j in [1,2,3,4]:
-    if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i -2][j +2] == piece:
-      return piece + " won"
+    else:
+      if j < 4:
+        if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
+            j + 3] == piece:
+          return piece + " won"
+        else:
+      # checks for downs
+          if i < 3:
+            if board[i + 1][j] == piece and board[i + 2][j] == piece and board[
+                i + 3][j] == piece:
+              return piece + " won"
+          #check if you place in a 00_0
+            else:
+              if not j in [0, 1, 6]:
+                if board[i][j + 1] == piece and board[i][j - 1] == piece and board[i][
+                    j - 2] == piece:
+                  return piece + " won"
+                else:
+              #check for 0_00
+                  if not j in [0, 5, 6]:
+                    if board[i][j + 1] == piece and board[i][j + 2] == piece and board[i][
+                        j - 1] == piece:
+                      return piece + " won"
+                  else:
+                  # check for top piece of a down-right diagonal
+                    if i < 3 and j < 4:
+                      if board[i + 1][j + 1] == piece and board[i + 2][j + 2] == piece and board[
+                          i + 3][j + 3] == piece:
+                        return piece + " won"
+                      else:
+                        # check for bottom piece of a down-right diagonal
+                        if i > 2 and j > 2:
+                          if board[i - 1][j - 1] == piece and board[i - 2][j - 2] == piece and board[
+                              i - 3][j - 3] == piece:
+                            return piece + " won"
+                          else:
+                        # check for top piece of down-left diagonal
+                            if i < 3 and j > 2:
+                              if board[i + 1][j - 1] == piece and board[i + 2][j - 2] == piece and board[
+                                  i + 3][j - 3] == piece:
+                                return piece + " won"
+                              else:
+                            # check for bottom piece of down-left diagonal
+                                if i > 2 and j < 4:
+                                  if board[i - 1][j + 1] == piece and board[i - 2][j + 2] == piece and board[
+                                      i - 3][j + 3] == piece:
+                                    return piece + " won"
+                                  else:
+                                    # check for 2nd top piece of down-right diagonal
+                                    if i in [1,2,3] and j in [1,2,3,4]:
+                                      if board[i - 1][j - 1] == piece and board[i +1 ][j + 1] == piece and board[i +2][j +2] == piece:
+                                        return piece + " won"
+                                      else:
+                                    # check for 3rd piece of down-right diagonal
+                                        if i in [2,3,4] and j in [2,3,4,5]:
+                                          if board[i - 1][j - 1] == piece and board[i -2 ][j -2] == piece and board[i +1][j +1] == piece:
+                                            return piece + " won"
+                                        # check for 2nd piece of down-left diagonal
+                                          else:
+                                            if i in [1,2,3] and j in [2,3,4,5]:
+                                              if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i +2][j -2] == piece:
+                                                return piece + " won"
+                                              else:
+                                                # check for 3rd piece in down-left diagonal
+                                                if i in [2,3,4] and j in [1,2,3,4]:
+                                                  if board[i - 1][j + 1] == piece and board[i +1 ][j -1] == piece and board[i -2][j +2] == piece:
+                                                    return piece + " won"
 
 def place(name, Line, row):
   open_file = open(name, "r")
