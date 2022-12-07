@@ -880,6 +880,7 @@ def place(name, Line, row):
   " Displays the board and buttons, which will place your piece in the desired lane",
   Arguements="None")
 async def Connect4(ctx):
+
   if not os.path.exists(ctx.author.name + "#"):
     open_file = open(ctx.author.name + "#", "w")
     open_file.write(
@@ -928,6 +929,9 @@ async def Connect4(ctx):
                    emoji="7️⃣",
                    style=discord.ButtonStyle.gray,
                    row=1)
+  button8 = Button(label="End Game",
+                   style=discord.ButtonStyle.gray,
+                   row=2)
 
   async def button1Clicked(interaction):
     returns = place(ctx.author.name + "#", 0, 1)
@@ -1253,6 +1257,26 @@ async def Connect4(ctx):
     await m.edit(content=message, view=view1)
     await interaction.response.defer()
 
+  async def button8Clicked(interaction):
+    open_file = open(ctx.author.name + "#","r")
+    board = []
+    piece = open_file.readline()
+    for _ in range(6):
+      value = open_file.readline()
+      board.append(value.strip("\n").split(","))
+    open_file.close()
+    L1 = "".join(board[0])
+    L2 = "".join(board[1])
+    L3 = "".join(board[2])
+    L4 = "".join(board[3])
+    L5 = "".join(board[4])
+    L6 = "".join(board[5])
+    os.remove(ctx.author.name + "#")
+    view1.clear_items()
+    message = L1 + "\n" + L2 + "\n" + L3 + "\n" + L4 + "\n" + L5 + "\n" + L6 + "\n" + ctx.author.name + "'s Game Ended\nUse !loganConnect4 to begin a new game"
+    await m.edit(content=message,view=view1)
+    await  interaction.response.defer()
+
   button1.callback = button1Clicked
   button2.callback = button2Clicked
   button3.callback = button3Clicked
@@ -1260,11 +1284,18 @@ async def Connect4(ctx):
   button5.callback = button5Clicked
   button6.callback = button6Clicked
   button7.callback = button7Clicked
-
+  button8.callback = button8Clicked
+  
   async def fullBoardCheck():
     if button1.disabled == True and button2.disabled == True and button3.disabled == True and button4.disabled == True and button5.disabled == True and button6.disabled == True and button7.disabled == True:
       return "Full"
 
+  
+      
+  
+
+  
+  
   view1 = View()
   view1.add_item(button1)
   view1.add_item(button2)
@@ -1273,27 +1304,11 @@ async def Connect4(ctx):
   view1.add_item(button5)
   view1.add_item(button6)
   view1.add_item(button7)
+  view1.add_item(button8)
 
   m = await ctx.send(piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" +
                      L4 + "\n" + L5 + "\n" + L6,
                      view=view1)
-
-
-@bot.command(
-  brief=" Ends your Connect 4 Game",
-  description=" Deletes your started connect 4 game, if you have one playing",
-  Arguements="None")
-async def Connect4Delete(ctx):
-  if os.path.exists(ctx.author.name + "#"):
-    os.remove(ctx.author.name + "#")
-    await ctx.send(
-      ctx.author.name +
-      "'s Connect4 Game Has Been Deleted\nStart a New One using !loganConnect4"
-    )
-  else:
-    await ctx.send(
-      "You Are Not Currently Playing Connect 4\nBegin your Game using !loganConnect4"
-    )
 
 
 #============================================================
