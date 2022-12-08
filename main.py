@@ -838,6 +838,7 @@ def checks(piece, last, name):
 def place(name, Line, row):
   open_file = open(name, "r")
   board = []
+  IDS = open_file.readline()
   piece = open_file.readline().strip("\n")
   for x in range(6):
     value = open_file.readline()
@@ -874,7 +875,7 @@ def place(name, Line, row):
   phrase = "unfull row" + "|" + lastPlayed
   return phrase
 
-
+# in button pressing, read the new line
 @bot.command(
   brief=" Begins your Connect 4 Game",
   description=
@@ -888,7 +889,24 @@ async def Connect4(ctx):
       ":green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
     )
     open_file.close()
-  open_file = open(ctx.author.name + "#", "r")
+    open_file = open(ctx.author.name + "#", "r")
+  else:
+    csv_file = ctx.author.name+'#'
+    with open(csv_file) as file:
+          reader = csv.reader(file)
+          for row in reader:
+              try:
+                  message_id = int(row[0])
+                  channel_id = int(row[1])
+                  message = await bot.get_channel(channel_id).fetch_message(message_id)
+                  await message.delete()
+              except:
+                  pass
+    open_file = open(ctx.author.name + "#", "r")
+    IDS = open_file.readline()
+
+  
+  
   board = []
   piece = open_file.readline()
   for _ in range(6):
@@ -941,7 +959,9 @@ async def Connect4(ctx):
     lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
+    IDS = open_file.readline()
     piece = open_file.readline()
+    
     for _ in range(6):
       value = open_file.readline()
       board.append(value.strip("\n").split(","))
@@ -987,6 +1007,7 @@ async def Connect4(ctx):
     lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
+    IDS = open_file.readline()
     piece = open_file.readline()
     for _ in range(6):
       value = open_file.readline()
@@ -1035,6 +1056,7 @@ async def Connect4(ctx):
     lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
+    IDS = open_file.readline()
     piece = open_file.readline()
     for _ in range(6):
       value = open_file.readline()
@@ -1081,6 +1103,7 @@ async def Connect4(ctx):
     lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
+    IDS = open_file.readline()
     piece = open_file.readline()
     for _ in range(6):
       value = open_file.readline()
@@ -1127,6 +1150,7 @@ async def Connect4(ctx):
     lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
+    IDS = open_file.readline()
     piece = open_file.readline()
     for _ in range(6):
       value = open_file.readline()
@@ -1173,6 +1197,7 @@ async def Connect4(ctx):
     lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
+    IDS = open_file.readline()
     piece = open_file.readline()
     for _ in range(6):
       value = open_file.readline()
@@ -1219,6 +1244,7 @@ async def Connect4(ctx):
     lastPlayed = items_returned[1]
     open_file = open(ctx.author.name + "#", "r")
     board = []
+    IDS = open_file.readline()
     piece = open_file.readline()
     for _ in range(6):
       value = open_file.readline()
@@ -1261,6 +1287,7 @@ async def Connect4(ctx):
   async def button8Clicked(interaction):
     open_file = open(ctx.author.name + "#","r")
     board = []
+    IDS = open_file.readline()
     piece = open_file.readline()
     for _ in range(6):
       value = open_file.readline()
@@ -1310,25 +1337,14 @@ async def Connect4(ctx):
   m = await ctx.send(piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" +
                      L4 + "\n" + L5 + "\n" + L6,
                      view=view1)
-  print(m.id)
-  print(m.channel.id)
+
   
   open_file = open(ctx.author.name+"#","w")
   open_file.write(str(m.id)+","+str(m.channel.id)+"\n:green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:")
   open_file.close()
   
 
-  csv_file = ctx.author.name+'#'
-  with open(csv_file) as file:
-        reader = csv.reader(file)
-        for row in reader:
-            try:
-                message_id = int(row[0])
-                channel_id = int(row[1])
-                message = await bot.get_channel(channel_id).fetch_message(message_id)
-                await message.delete()
-            except:
-                pass
+  
 
 
 
