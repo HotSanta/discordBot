@@ -887,7 +887,21 @@ async def Connect4(ctx):
       ":green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
     )
     open_file.close()
-  open_file = open(ctx.author.name + "#", "r")
+    open_file = open(ctx.author.name + "#", "r")
+  else:
+    open_file = open(ctx.author.name+ "#","r")
+    IDS = open_file.readline().strip("\n").split("|")
+    open_file.close()
+    channel = bot.get_channel(832528547662659597) # Channel ID
+    msg = await channel.fetch_message(1050261927697330177) # Message ID
+    await msg.delete() # Deleting
+    open_file = open(ctx.author.name + "#", "r")
+    IDS = open_file.readline().strip("\n").split("|")
+  channel = bot.get_channel(832528547662659597) # Channel ID
+  msg = await channel.fetch_message(1050261978834276413) # Message ID
+  await msg.delete() # Deleting
+    
+  
   board = []
   piece = open_file.readline()
   for _ in range(6):
@@ -1309,6 +1323,9 @@ async def Connect4(ctx):
   m = await ctx.send(piece + " turn\n" + L1 + "\n" + L2 + "\n" + L3 + "\n" +
                      L4 + "\n" + L5 + "\n" + L6,
                      view=view1)
+  Message = str(m.channel.id) + "|" + str(m.id) + "\n"
+  open_file = open(ctx.author.name+"#","w")
+  open_file.write(Message + ":green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:")
 
 
 #============================================================
