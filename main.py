@@ -1314,7 +1314,7 @@ async def Connect4(ctx):
   print(m.channel.id)
   
   open_file = open(ctx.author.name+"#","w")
-  open_file.write(str(m.id)+","+str(m.channel.id)+"\nhi")
+  open_file.write(str(m.id)+","+str(m.channel.id)+"\n:green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:")
   open_file.close()
   
 
@@ -1329,7 +1329,7 @@ async def Connect4(ctx):
                 await message.delete()
             except:
                 pass
-  
+
 
 
 
