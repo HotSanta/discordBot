@@ -898,8 +898,6 @@ async def Connect4(ctx):
               try:
                 message_id = int(row[0])
                 channel_id = int(row[1])
-                print(row[0])
-                print(row[1])
                 message = await bot.get_channel(channel_id).fetch_message(message_id)
                 await message.delete()
               except:
@@ -1320,7 +1318,20 @@ async def Connect4(ctx):
     if button1.disabled == True and button2.disabled == True and button3.disabled == True and button4.disabled == True and button5.disabled == True and button6.disabled == True and button7.disabled == True:
       return "Full"
 
-  
+  open_file = open(ctx.author.name + "#", "r")
+  first = open_file.readline()
+  message = ""
+  if not first == ":green_circle:\n":
+    IDS = open_file.readline()
+  board = []
+  for _ in range(6):
+    value = open_file.readline()
+    board.append(value.strip("\n").split(","))
+  open_file.close()
+  buttons = [button1,button2,button3,button4,button5,button6,button7]
+  for items in range(7):
+    if board[0][items] == ":green_circle:" or board[0][items] == ":red_circle:":
+      buttons[items].disabled = True
       
   
 
@@ -1342,12 +1353,10 @@ async def Connect4(ctx):
 
   open_file = open(ctx.author.name+"#","r")
   first = open_file.readline()
-  print(first)
   message = ""
   if first == ":green_circle:\n":
     message = ":green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
   else:
-    
     piece = open_file.readline()
     message += piece
     for _ in range(6):
@@ -1357,6 +1366,9 @@ async def Connect4(ctx):
   open_file = open(ctx.author.name+"#","w")
   open_file.write(str(m.id)+","+str(m.channel.id)+"\n"+message)
   open_file.close()
+  
+
+
   
 
   
