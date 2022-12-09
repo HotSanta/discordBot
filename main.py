@@ -759,6 +759,7 @@ def checks(piece, last, name):
   board = []
   open_file = open(name, "r")
   thing = open_file.readline()
+  thing2 = open_file.readline()
   for x in range(6):
     value = open_file.readline()
     board.append(value.strip("\n").split(","))
@@ -766,7 +767,6 @@ def checks(piece, last, name):
   cords = last.split(',')
   i = int(cords[0])  # row/x
   j = int(cords[1])  # colum/y
-
   # checks for 000_
   if j > 2:
     if board[i][j - 1] == piece and board[i][j - 2] == piece and board[i][
