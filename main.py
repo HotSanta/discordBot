@@ -867,7 +867,7 @@ def place(name, Line, row):
   elif piece == ":red_circle:":
     new_piece = ":green_circle:\n"
   open_file = open(name, "w")
-  open_file.write(new_piece + phrase)
+  open_file.write(IDS+new_piece + phrase)
   open_file.close()
   if board[0][row - 1] == piece:
     phrase = "Full row" + "|" + lastPlayed
@@ -1338,9 +1338,23 @@ async def Connect4(ctx):
                      L4 + "\n" + L5 + "\n" + L6,
                      view=view1)
 
-  
+  open_file = open(ctx.author.name+"#","r")
+  first = open_file.readline()
+  print(first)
+  message = ""
+  if first == ":green_circle:\n":
+    message = "\n:green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
+  else:
+    
+    piece = open_file.readline()
+    message += first
+    message += piece
+    for _ in range(6):
+      value = open_file.readline()
+      message+= value
+    
   open_file = open(ctx.author.name+"#","w")
-  open_file.write(str(m.id)+","+str(m.channel.id)+"\n:green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:")
+  open_file.write(str(m.id)+","+str(m.channel.id)+message)
   open_file.close()
   
 
