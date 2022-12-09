@@ -896,12 +896,14 @@ async def Connect4(ctx):
           reader = csv.reader(file)
           for row in reader:
               try:
-                  message_id = int(row[0])
-                  channel_id = int(row[1])
-                  message = await bot.get_channel(channel_id).fetch_message(message_id)
-                  await message.delete()
+                message_id = int(row[0])
+                channel_id = int(row[1])
+                print(row[0])
+                print(row[1])
+                message = await bot.get_channel(channel_id).fetch_message(message_id)
+                await message.delete()
               except:
-                  pass
+                pass
     open_file = open(ctx.author.name + "#", "r")
     IDS = open_file.readline()
 
@@ -1343,18 +1345,17 @@ async def Connect4(ctx):
   print(first)
   message = ""
   if first == ":green_circle:\n":
-    message = "\n:green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
+    message = ":green_circle:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:\n:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:,:white_large_square:"
   else:
     
     piece = open_file.readline()
-    message += first
     message += piece
     for _ in range(6):
       value = open_file.readline()
       message+= value
     
   open_file = open(ctx.author.name+"#","w")
-  open_file.write(str(m.id)+","+str(m.channel.id)+message)
+  open_file.write(str(m.id)+","+str(m.channel.id)+"\n"+message)
   open_file.close()
   
 
